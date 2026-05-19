@@ -1,12 +1,13 @@
-import React from 'react'
-import { Text, View } from 'react-native'
+import ScreenWrapper from "@/components/ScreenWrapper";
+import RegistrationScreen from "@/screens/auth/registration";
+import React from "react";
 
 const Registration = () => {
   return (
-    <View>
-      <Text>R</Text>
-    </View>
-  )
-}
+    <ScreenWrapper>
+      <RegistrationScreen />
+    </ScreenWrapper>
+  );
+};
 
-export default Registration
+export default Registration;
