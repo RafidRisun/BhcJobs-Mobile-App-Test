@@ -1,9 +1,20 @@
-import { Text, View, StyleSheet } from "react-native";
+import { useRouter } from "expo-router";
+import { useEffect } from "react";
+import { ActivityIndicator, StyleSheet, View } from 'react-native';
 
 export default function Index() {
+  const router = useRouter();
+
+  useEffect(() => {
+    setTimeout(() => {
+      console.log("Index");
+      router.replace("/login");
+    }, 1000);
+  }, []);
+
   return (
     <View style={styles.container}>
-      <Text>Edit src/app/index.tsx to edit this screen.</Text>
+      <ActivityIndicator size="large" color="#0000ff" />
     </View>
   );
 }
