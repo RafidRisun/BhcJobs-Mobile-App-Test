@@ -1,11 +1,12 @@
+import NavBar from "@/components/NavBar";
+import ScreenWrapper from "@/components/ScreenWrapper";
 import React from "react";
-import { Text, View } from "react-native";
 
 const HomeScreen = () => {
   return (
-    <View>
-      <Text>HomeScreen</Text>
-    </View>
+    <ScreenWrapper>
+      <NavBar />
+    </ScreenWrapper>
   );
 };
 
