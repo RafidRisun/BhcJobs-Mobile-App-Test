@@ -1,3 +1,4 @@
+import { getToken } from "@/utils/tokenStorage";
 import axios from "axios";
 
 const axiosClient = axios.create({
@@ -7,8 +8,9 @@ const axiosClient = axios.create({
   },
 });
 
-axiosClient.interceptors.request.use((config) => {
-  const token = "your-token-here";
+axiosClient.interceptors.request.use(async (config) => {
+  const token = await getToken();
+  console.log("Attaching token to request:", token);
   if (token) config.headers.Authorization = `Bearer ${token}`;
   return config;
 });

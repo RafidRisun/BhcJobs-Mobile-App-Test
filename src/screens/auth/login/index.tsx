@@ -1,5 +1,6 @@
 import FullButton from "@/components/FullButton";
 import TextField from "@/components/TextField";
+import { useLoginJobSeeker } from "@/hooks/useLoginJobSeeker";
 import tw from "@/lib/tailwind";
 import { Ionicons } from "@expo/vector-icons";
 import { LinearGradient } from "expo-linear-gradient";
@@ -16,6 +17,18 @@ import {
 export default function LoginScreen() {
   const [showPassword, setShowPassword] = useState(false);
   const router = useRouter();
+  const [phone, setPhone] = useState("");
+  const [password, setPassword] = useState("");
+
+  const { mutate: login, isPending, isError } = useLoginJobSeeker();
+
+  const handleLogin = () => {
+    const formData = new FormData();
+    formData.append("phone", phone);
+    formData.append("password", password);
+    login(formData);
+  };
+
   return (
     <ScrollView
       style={tw`flex-1`}
@@ -40,6 +53,9 @@ export default function LoginScreen() {
             style={tw`font-segoe text-black flex-1 min-w-0 focus:border-0 focus:ring-0`}
             placeholder="Enter your mobile number"
             placeholderTextColor="#9CA3AF"
+            keyboardType="phone-pad"
+            value={phone}
+            onChangeText={setPhone}
           />
         </TextField>
         <TextField title="Password">
@@ -49,6 +65,8 @@ export default function LoginScreen() {
             placeholder="Enter your password"
             placeholderTextColor="#9CA3AF"
             secureTextEntry={!showPassword}
+            value={password}
+            onChangeText={setPassword}
           />
           <TouchableOpacity
             onPress={() => setShowPassword(!showPassword)}
@@ -61,7 +79,7 @@ export default function LoginScreen() {
             )}
           </TouchableOpacity>
         </TextField>
-        <FullButton text="Log In" action={() => router.push("/home")} />
+        <FullButton text="Log In" action={handleLogin} />
         {/* <View style={tw`flex flex-row items-center gap-2 w-full max-w-80`}>
           <HorizontalDivider />
           <Text style={tw`text-gray-500 font-segoe`}>or</Text>
