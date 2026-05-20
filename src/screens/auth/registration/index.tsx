@@ -1,13 +1,31 @@
 import tw from "@/lib/tailwind";
+import { DropdownMenu, DropdownMenuItem } from "@expo/ui/jetpack-compose";
 import { LinearGradient } from "expo-linear-gradient";
 import { Link } from "expo-router";
 import { useState } from "react";
-import { FaEye, FaLock, FaPhone, FaUser } from "react-icons/fa";
-import { Text, TextInput, TouchableOpacity, View } from "react-native";
-// import DateTimePicker from '@react-native-community/datetimepicker';
+import {
+    FaCalendarAlt,
+    FaEye,
+    FaLock,
+    FaPassport,
+    FaPhone,
+    FaUser,
+} from "react-icons/fa";
+import {
+    Platform,
+    Text,
+    TextInput,
+    TouchableOpacity,
+    View,
+} from "react-native";
 
 export default function RegistrationScreen() {
   const [showPassword, setShowPassword] = useState(false);
+  const [showPicker, setShowPicker] = useState(() => Platform.OS === "ios");
+  const [date, setDate] = useState(new Date());
+  const [isExpanded, setIsExpanded] = useState(false);
+  const [selectedGender, setSelectedGender] = useState("Select Gender");
+
   return (
     <View style={tw`flex flex-col items-center justify-center h-full`}>
       <LinearGradient
@@ -47,15 +65,82 @@ export default function RegistrationScreen() {
           </View>
         </View>
         <View style={tw`flex flex-col gap-3 w-full max-w-80`}>
-          <Text style={tw`font-segoe-bold`}>Mobile Number</Text>
+          <Text style={tw`font-segoe-bold`}>Date of Birth</Text>
           <View
             style={tw`border border-primary-light rounded-lg px-3 py-2 flex flex-row items-center justify-start gap-2`}
           >
-            <FaPhone style={tw`text-primary`} />
+            <FaCalendarAlt style={tw`text-primary`} />
+            <TouchableOpacity onPress={() => setShowPicker(true)}>
+              <Text style={tw`font-segoe w-full focus:border-0 focus:ring-0`}>
+                {date.toDateString()}
+              </Text>
+            </TouchableOpacity>
+          </View>
+        </View>
+        <View style={tw`flex flex-col gap-3 w-full max-w-80`}>
+          <Text style={tw`font-segoe-bold`}>Passport</Text>
+          <View
+            style={tw`border border-primary-light rounded-lg px-3 py-2 flex flex-row items-center justify-start gap-2`}
+          >
+            <FaPassport style={tw`text-primary`} />
             <TextInput
               style={tw`font-segoe w-full focus:border-0 focus:ring-0`}
-              placeholder="Enter your mobile number"
+              placeholder="Enter your passport number"
             />
+          </View>
+        </View>
+        <View style={tw`flex flex-col gap-3 w-full max-w-80`}>
+          <Text style={tw`font-segoe-bold`}>Gender</Text>
+          <View
+            style={tw`border border-primary-light rounded-lg px-3 py-2 flex flex-row items-center justify-start gap-2`}
+          >
+            <FaUser style={tw`text-primary`} />
+            <DropdownMenu
+              expanded={isExpanded}
+              onDismissRequest={() => setIsExpanded(false)}
+            >
+              <DropdownMenu.Trigger>
+                <TouchableOpacity onPress={() => setIsExpanded(true)}>
+                  <Text
+                    style={tw`font-segoe w-full focus:border-0 focus:ring-0`}
+                  >
+                    {selectedGender}
+                  </Text>
+                </TouchableOpacity>
+              </DropdownMenu.Trigger>
+              <DropdownMenu.Items>
+                <DropdownMenuItem
+                  onClick={() => {
+                    setIsExpanded(false);
+                    setSelectedGender("Male");
+                  }}
+                >
+                  <DropdownMenuItem.Text>
+                    <Text>Male</Text>
+                  </DropdownMenuItem.Text>
+                </DropdownMenuItem>
+                <DropdownMenuItem
+                  onClick={() => {
+                    setIsExpanded(false);
+                    setSelectedGender("Female");
+                  }}
+                >
+                  <DropdownMenuItem.Text>
+                    <Text>Female</Text>
+                  </DropdownMenuItem.Text>
+                </DropdownMenuItem>
+                <DropdownMenuItem
+                  onClick={() => {
+                    setIsExpanded(false);
+                    setSelectedGender("Other");
+                  }}
+                >
+                  <DropdownMenuItem.Text>
+                    <Text>Other</Text>
+                  </DropdownMenuItem.Text>
+                </DropdownMenuItem>
+              </DropdownMenu.Items>
+            </DropdownMenu>
           </View>
         </View>
         <View style={tw`flex flex-col gap-3 w-full max-w-80`}>
