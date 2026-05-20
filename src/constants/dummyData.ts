@@ -1483,3 +1483,46 @@ export const industries = [
         jobs_count: 0,
     },
 ];
+
+export const popularCompanies = [
+    {
+        "id": 82,
+        "name": "HACC",
+        "is_active": 1,
+        "slug": "hacc",
+        "image": "7442_1755680977.webp",
+        "jobs_count": 3
+    },
+    {
+        "id": 85,
+        "name": "IHIS Company",
+        "is_active": 1,
+        "slug": "ihis-company",
+        "image": "2368_1760964252.webp",
+        "jobs_count": 2
+    },
+    {
+        "id": 87,
+        "name": "Jabco",
+        "is_active": 1,
+        "slug": "jabco",
+        "image": "3449_1767420473.webp",
+        "jobs_count": 1
+    },
+    {
+        "id": 89,
+        "name": "SAPIN",
+        "is_active": 1,
+        "slug": "sapin",
+        "image": "5781_1771908244.webp",
+        "jobs_count": 1
+    },
+    {
+        "id": 73,
+        "name": "Shade Corporation Limited",
+        "is_active": 1,
+        "slug": "shade-corporation",
+        "image": "2992_1757503598.webp",
+        "jobs_count": 2
+    }
+]

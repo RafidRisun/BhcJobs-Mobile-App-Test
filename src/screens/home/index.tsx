@@ -1,6 +1,10 @@
 import NavBar from "@/components/NavBar";
 import ScreenWrapper from "@/components/ScreenWrapper";
-import { industries, recommendedJobs } from "@/constants/dummyData";
+import {
+  industries,
+  popularCompanies,
+  recommendedJobs,
+} from "@/constants/dummyData";
 import tw from "@/lib/tailwind";
 import { Ionicons as IoIcons } from "@expo/vector-icons";
 import { Image } from "expo-image";
@@ -15,6 +19,9 @@ const HomeScreen = () => {
 
   const [jobsSlice, setJobsSlice] = useState(4);
   const visibleJobs = recommendedJobs.slice(0, jobsSlice);
+
+  const [companySlice, setCompanySlice] = useState(4);
+  const visibleCompanies = popularCompanies.slice(0, companySlice);
 
   return (
     <ScreenWrapper>
@@ -186,6 +193,69 @@ const HomeScreen = () => {
             </TouchableOpacity>
           ) : null}
         </View>
+      </View>
+
+      {/* Popular Companies */}
+      <View style={tw`flex flex-col bg-white items-center p-8 gap-6 pb-25`}>
+        <View
+          style={tw`bg-gray-100 px-6 py-3 rounded-full border border-gray-300`}
+        >
+          <Text style={tw`text-xl font-segoe-bold text-black`}>
+            Popular Companies
+          </Text>
+        </View>
+        <View
+          style={tw`flex flex-row flex-wrap items-center justify-center gap-4`}
+        >
+          {visibleCompanies.map((company) => (
+            <TouchableOpacity
+              key={company.id}
+              style={tw`flex flex-row w-full h-30 bg-white shadow-md rounded-lg items-center justify-start gap-4 p-4`}
+            >
+              <Image
+                source={{
+                  uri: `https://dev.bhcjobs.com/storage/company-image/${company.image}`,
+                }}
+                style={tw`w-20 h-20`}
+                contentFit="contain"
+              />
+              <View style={tw`flex flex-col items-start justify-center gap-1`}>
+                <Text style={tw`text-center font-segoe-bold text-black`}>
+                  {company.name}
+                </Text>
+                <Text style={tw`text-sm text-gray-500`}>
+                  {company.jobs_count} Available Jobs
+                </Text>
+              </View>
+            </TouchableOpacity>
+          ))}
+          {companySlice < popularCompanies.length ? (
+            <TouchableOpacity
+              onPress={() => setCompanySlice(companySlice + 4)}
+              style={tw`pt-4`}
+            >
+              <Text
+                style={tw`text-center font-segoe-bold text-primary text-base`}
+              >
+                View More
+              </Text>
+              <Text style={tw`text-sm text-gray-500 text-center`}>
+                {popularCompanies.length - companySlice} more companies
+              </Text>
+            </TouchableOpacity>
+          ) : null}
+        </View>
+      </View>
+      <View style={tw`flex flex-col items-center justify-start p-8 gap-4`}>
+        <LinearGradient
+          colors={["#3D75ED", "#70AEFA"]}
+          style={tw`absolute inset-0`}
+          start={{ x: 0, y: 0 }}
+          end={{ x: 1, y: 0 }}
+        />
+        <Text style={tw`text-2xl font-segoe-bold text-white`}>
+          Thank you for your consideration!
+        </Text>
       </View>
     </ScreenWrapper>
   );
