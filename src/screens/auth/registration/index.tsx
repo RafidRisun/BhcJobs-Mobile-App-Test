@@ -6,7 +6,7 @@ import { Ionicons } from "@expo/vector-icons";
 import DateTimePicker from "@react-native-community/datetimepicker";
 import { LinearGradient } from "expo-linear-gradient";
 import { Link, useRouter } from "expo-router";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   ScrollView,
   Text,
@@ -78,11 +78,16 @@ export default function RegistrationScreen() {
     formData.append("password", password);
     formData.append("confirm_password", confirmPassword);
     register(formData);
-    if (!isPending && !isError) {
-      console.log("Registration successful");
-      router.push("/otp");
-    }
   };
+
+  useEffect(() => {
+    if (isError) {
+      setInvalid(true);
+      setValidationMessage(
+        error.response?.data?.message || "Registration failed",
+      );
+    }
+  }, [isError, error]);
 
   return (
     <ScrollView

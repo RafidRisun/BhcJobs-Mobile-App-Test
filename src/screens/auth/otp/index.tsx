@@ -1,15 +1,35 @@
 import FullButton from "@/components/FullButton";
-import TextField from "@/components/TextField";
+import { useVerifyOTP } from "@/hooks/usePhoneVerify";
 import tw from "@/lib/tailwind";
-import { Ionicons } from "@expo/vector-icons";
 import { LinearGradient } from "expo-linear-gradient";
-import { Link, useRouter } from "expo-router";
+import { Link, useLocalSearchParams, useRouter } from "expo-router";
 import { useState } from "react";
-import { ScrollView, Text, TextInput, View } from "react-native";
+import { ScrollView, Text, View } from "react-native";
+import { OtpInput } from "react-native-otp-entry";
 
 export default function OtpScreen() {
-  const [showPassword, setShowPassword] = useState(false);
   const router = useRouter();
+  const { phone } = useLocalSearchParams();
+  const [otp, setOtp] = useState("");
+
+  const {
+    mutate: verifyOtpMutation,
+    isPending,
+    isError,
+    error,
+  } = useVerifyOTP();
+
+  const verifyOTP = () => {
+    if (otp.length !== 4) {
+      alert("Please enter a valid 4-digit OTP");
+      return;
+    }
+    const formData = new FormData();
+    formData.append("phone", phone as string);
+    formData.append("otp", otp);
+    verifyOtpMutation(formData);
+  };
+
   return (
     <ScrollView
       style={tw`flex-1`}
@@ -28,15 +48,17 @@ export default function OtpScreen() {
         <Text style={tw`font-segoe-bold text-2xl text-primary`}>
           OTP Verification
         </Text>
-        <TextField title="Enter OTP">
-          <Ionicons name="key" size={20} color="#2563EB" />
-          <TextInput
-            style={tw`font-segoe text-black flex-1 min-w-0 focus:border-0 focus:ring-0`}
-            placeholder="Enter the 6-digit OTP"
-            placeholderTextColor="#9CA3AF"
-          />
-        </TextField>
-        <FullButton text="Verify OTP" action={() => router.push("/home")} />
+        <OtpInput numberOfDigits={4} onTextChange={(text) => setOtp(text)} />
+        {isError && (
+          <Text style={tw`text-red-500 text-sm mt-2`}>
+            {error.response?.data?.message || "OTP verification failed"}
+          </Text>
+        )}
+        <FullButton
+          text="Verify OTP"
+          action={verifyOTP}
+          isPending={isPending}
+        />
         <View style={tw`flex flex-row items-center gap-2`}>
           <Text>Already have an account?</Text>
           <Link href="/login" style={tw`text-primary font-segoe-bold`}>
