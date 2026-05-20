@@ -6,8 +6,11 @@
       "@/*": [
         "./src/*"
       ],
+      "@screens/*": [
+        "./src/screens/*"
+      ],
       "@/assets/*": [
-        "./assets/*"
+        "./src/assets/*"
       ]
     }
   },
