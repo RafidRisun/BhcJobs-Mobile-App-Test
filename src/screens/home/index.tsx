@@ -1,5 +1,6 @@
 import NavBar from "@/components/NavBar";
 import ScreenWrapper from "@/components/ScreenWrapper";
+import { industries, recommendedJobs } from "@/constants/dummyData";
 import tw from "@/lib/tailwind";
 import { Ionicons as IoIcons } from "@expo/vector-icons";
 import { Image } from "expo-image";
@@ -9,9 +10,11 @@ import { Text, TextInput, TouchableOpacity, View } from "react-native";
 
 const HomeScreen = () => {
   const [showAllIndustries, setShowAllIndustries] = useState(false);
-  const visibleIndustries = showAllIndustries
-    ? industries
-    : industries.slice(0, 4);
+  const [industrySlice, setIndustrySlice] = useState(4);
+  const visibleIndustries = industries.slice(0, industrySlice);
+
+  const [jobsSlice, setJobsSlice] = useState(4);
+  const visibleJobs = recommendedJobs.slice(0, jobsSlice);
 
   return (
     <ScreenWrapper>
@@ -75,18 +78,110 @@ const HomeScreen = () => {
               </Text>
             </TouchableOpacity>
           ))}
-          {!showAllIndustries && industries.length > 4 ? (
+          {industrySlice < industries.length ? (
             <TouchableOpacity
-              onPress={() => setShowAllIndustries(true)}
+              onPress={() => setIndustrySlice(industrySlice + 4)}
               style={tw`pt-4`}
             >
               <Text
                 style={tw`text-center font-segoe-bold text-primary text-base`}
               >
-                View all
+                View More
               </Text>
               <Text style={tw`text-sm text-gray-500 text-center`}>
-                {industries.length - 4} more industries
+                {industries.length - industrySlice} more industries
+              </Text>
+            </TouchableOpacity>
+          ) : null}
+        </View>
+      </View>
+
+      {/* Recommended Jobs */}
+      <View style={tw`flex flex-col items-center p-8 gap-6`}>
+        <View
+          style={tw`bg-white px-6 py-3 rounded-full border border-gray-300`}
+        >
+          <Text style={tw`text-xl font-segoe-bold text-black`}>
+            Recommended Jobs
+          </Text>
+        </View>
+        <View style={tw`flex w-full items-center justify-center gap-4`}>
+          {visibleJobs.map((job) => (
+            <TouchableOpacity
+              key={job.id}
+              style={tw`flex flex-col w-full h-96 bg-white border border-primary-light rounded-xl items-start justify-start gap-3 p-4`}
+            >
+              <Text style={tw`text-xs text-gray-500 font-segoe mb-2`}>
+                {job.company.industry.name}
+              </Text>
+              <View style={tw`flex flex-row items-center justify-start gap-2`}>
+                <Image
+                  source={{
+                    uri: `https://dev.bhcjobs.com/storage/company-image/${job.company.image}`,
+                  }}
+                  style={tw`w-10 h-10 border border-gray-300 rounded-full`}
+                  contentFit="contain"
+                />
+                <Text style={tw`text-base text-black font-segoe-bold`}>
+                  {job.company.name}
+                </Text>
+              </View>
+              <Text style={tw`text-center font-segoe-bold text-black`}>
+                {job.job_title}
+              </Text>
+              <View
+                style={tw`flex flex-row items-center w-full bg-primary-light p-4 rounded-xl`}
+              >
+                <Text style={tw`text-lg font-segoe text-primary mr-2`}>
+                  {job.currency}
+                </Text>
+                <Text style={tw`text-lg font-segoe-bold text-primary`}>
+                  {job.min_salary}
+                </Text>
+                <Text style={tw`text-lg font-segoe text-primary`}>-</Text>
+                <Text style={tw`text-lg font-segoe-bold text-primary`}>
+                  {job.max_salary}
+                </Text>
+              </View>
+              <View
+                style={tw`flex flex-row items-center justify-start gap-4 px-3 py-2`}
+              >
+                <View
+                  style={tw`flex flex-row items-center justify-start gap-1`}
+                >
+                  <IoIcons name="briefcase" size={16} color="#2563EB" />
+                  <Text style={tw`text-sm text-gray-500`}>
+                    {job.type.toUpperCase()}
+                  </Text>
+                </View>
+                <View
+                  style={tw`flex flex-row items-center justify-start gap-1`}
+                >
+                  <IoIcons name="location" size={16} color="#2563EB" />
+                  <Text style={tw`text-sm text-gray-500`}>
+                    {job.company.country.name}
+                  </Text>
+                </View>
+              </View>
+              <TouchableOpacity
+                style={tw`bg-primary py-2 px-4 rounded-lg items-center justify-center w-full mt-auto`}
+              >
+                <Text style={tw`text-white font-segoe-bold`}>Apply Now</Text>
+              </TouchableOpacity>
+            </TouchableOpacity>
+          ))}
+          {jobsSlice < recommendedJobs.length ? (
+            <TouchableOpacity
+              onPress={() => setJobsSlice(jobsSlice + 4)}
+              style={tw`pt-4`}
+            >
+              <Text
+                style={tw`text-center font-segoe-bold text-primary text-base`}
+              >
+                View More
+              </Text>
+              <Text style={tw`text-sm text-gray-500 text-center`}>
+                {recommendedJobs.length - jobsSlice} more jobs
               </Text>
             </TouchableOpacity>
           ) : null}
@@ -97,86 +192,3 @@ const HomeScreen = () => {
 };
 
 export default HomeScreen;
-
-const industries = [
-  {
-    id: 10,
-    priority: 1,
-    name: "Construction",
-    is_active: 1,
-    image: "2362_1754539698.webp",
-    jobs_count: 6,
-  },
-  {
-    id: 26,
-    priority: 2,
-    name: "Facilities Management",
-    is_active: 1,
-    image: "7857_1754539808.webp",
-    jobs_count: 1,
-  },
-  {
-    id: 11,
-    priority: 3,
-    name: "Fast Food Restaurant",
-    is_active: 1,
-    image: "3213_1754539712.webp",
-    jobs_count: 0,
-  },
-  {
-    id: 22,
-    priority: 4,
-    name: "Cafés & Coffee Shops",
-    is_active: 1,
-    image: "6369_1754539954.webp",
-    jobs_count: 0,
-  },
-  {
-    id: 16,
-    priority: 5,
-    name: "Agriculture",
-    is_active: 1,
-    image: "6102_1754539741.webp",
-    jobs_count: 0,
-  },
-  {
-    id: 29,
-    priority: 5,
-    name: "Contracting & Maintenance",
-    is_active: 1,
-    image: "3613_1761115042.webp",
-    jobs_count: 2,
-  },
-  {
-    id: 17,
-    priority: 6,
-    name: "Factory & Manufacturing",
-    is_active: 1,
-    image: "3275_1754539767.webp",
-    jobs_count: 1,
-  },
-  {
-    id: 28,
-    priority: 7,
-    name: "Hotel",
-    is_active: 1,
-    image: "9845_1754539825.webp",
-    jobs_count: 0,
-  },
-  {
-    id: 25,
-    priority: 8,
-    name: "Catering",
-    is_active: 1,
-    image: "6733_1754539843.webp",
-    jobs_count: 4,
-  },
-  {
-    id: 27,
-    priority: 9,
-    name: "Others",
-    is_active: 1,
-    image: "2281_1754539791.webp",
-    jobs_count: 0,
-  },
-];
