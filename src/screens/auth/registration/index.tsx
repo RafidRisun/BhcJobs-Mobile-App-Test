@@ -1,7 +1,9 @@
+import TextField from "@/components/TextField";
 import tw from "@/lib/tailwind";
-import { DropdownMenu, DropdownMenuItem } from "@expo/ui/jetpack-compose";
+// import { DropdownMenu, DropdownMenuItem } from "@expo/ui/jetpack-compose";
+import DateTimePicker from "@react-native-community/datetimepicker";
 import { LinearGradient } from "expo-linear-gradient";
-import { Link } from "expo-router";
+import { Link, useRouter } from "expo-router";
 import { useState } from "react";
 import {
     FaCalendarAlt,
@@ -11,23 +13,22 @@ import {
     FaPhone,
     FaUser,
 } from "react-icons/fa";
-import {
-    Platform,
-    Text,
-    TextInput,
-    TouchableOpacity,
-    View,
-} from "react-native";
+import { Text, TextInput, TouchableOpacity, View } from "react-native";
 
 export default function RegistrationScreen() {
   const [showPassword, setShowPassword] = useState(false);
-  const [showPicker, setShowPicker] = useState(() => Platform.OS === "ios");
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+  const [showPicker, setShowPicker] = useState(false);
   const [date, setDate] = useState(new Date());
   const [isExpanded, setIsExpanded] = useState(false);
   const [selectedGender, setSelectedGender] = useState("Select Gender");
 
+  const router = useRouter();
+
   return (
-    <View style={tw`flex flex-col items-center justify-center h-full`}>
+    <View
+      style={tw`flex flex-col overflow-scroll items-center justify-center h-full`}
+    >
       <LinearGradient
         colors={["#2563EB", "#DBEAFE", "#FFFFFF"]}
         style={tw`absolute inset-0`}
@@ -40,56 +41,49 @@ export default function RegistrationScreen() {
         <Text style={tw`font-segoe-bold text-2xl text-primary`}>
           Create an Account
         </Text>
-        <View style={tw`flex flex-col gap-3 w-full max-w-80`}>
-          <Text style={tw`font-segoe-bold`}>Full Name</Text>
-          <View
-            style={tw`border border-primary-light rounded-lg px-3 py-2 flex flex-row items-center justify-start gap-2`}
-          >
-            <FaUser style={tw`text-primary`} />
-            <TextInput
-              style={tw`font-segoe w-full focus:border-0 focus:ring-0`}
-              placeholder="Enter your full name"
-            />
-          </View>
-        </View>
-        <View style={tw`flex flex-col gap-3 w-full max-w-80`}>
-          <Text style={tw`font-segoe-bold`}>Mobile Number</Text>
-          <View
-            style={tw`border border-primary-light rounded-lg px-3 py-2 flex flex-row items-center justify-start gap-2`}
-          >
-            <FaPhone style={tw`text-primary`} />
-            <TextInput
-              style={tw`font-segoe w-full focus:border-0 focus:ring-0`}
-              placeholder="Enter your mobile number"
-            />
-          </View>
-        </View>
-        <View style={tw`flex flex-col gap-3 w-full max-w-80`}>
-          <Text style={tw`font-segoe-bold`}>Date of Birth</Text>
-          <View
-            style={tw`border border-primary-light rounded-lg px-3 py-2 flex flex-row items-center justify-start gap-2`}
-          >
-            <FaCalendarAlt style={tw`text-primary`} />
-            <TouchableOpacity onPress={() => setShowPicker(true)}>
-              <Text style={tw`font-segoe w-full focus:border-0 focus:ring-0`}>
-                {date.toDateString()}
-              </Text>
-            </TouchableOpacity>
-          </View>
-        </View>
-        <View style={tw`flex flex-col gap-3 w-full max-w-80`}>
-          <Text style={tw`font-segoe-bold`}>Passport</Text>
-          <View
-            style={tw`border border-primary-light rounded-lg px-3 py-2 flex flex-row items-center justify-start gap-2`}
-          >
-            <FaPassport style={tw`text-primary`} />
-            <TextInput
-              style={tw`font-segoe w-full focus:border-0 focus:ring-0`}
-              placeholder="Enter your passport number"
-            />
-          </View>
-        </View>
-        <View style={tw`flex flex-col gap-3 w-full max-w-80`}>
+        <TextField title="Full Name">
+          <FaUser style={tw`text-primary`} />
+          <TextInput
+            style={tw`font-segoe w-full focus:border-0 focus:ring-0`}
+            placeholder="Enter your full name"
+          />
+        </TextField>
+        <TextField title="Mobile Number">
+          <FaPhone style={tw`text-primary`} />
+          <TextInput
+            style={tw`font-segoe w-full focus:border-0 focus:ring-0`}
+            placeholder="Enter your mobile number"
+          />
+        </TextField>
+        <TextField title="Date of Birth">
+          <FaCalendarAlt style={tw`text-primary`} />
+          <TouchableOpacity onPress={() => setShowPicker(true)}>
+            <Text style={tw`font-segoe w-full focus:border-0 focus:ring-0`}>
+              {date.toDateString()}
+            </Text>
+          </TouchableOpacity>
+        </TextField>
+        {showPicker && (
+          <DateTimePicker
+            value={date}
+            mode="date"
+            display="default"
+            onChange={(event, selectedDate) => {
+              setShowPicker(false);
+              if (selectedDate) {
+                setDate(selectedDate);
+              }
+            }}
+          />
+        )}
+        <TextField title="Passport">
+          <FaPassport style={tw`text-primary`} />
+          <TextInput
+            style={tw`font-segoe w-full focus:border-0 focus:ring-0`}
+            placeholder="Enter your passport number"
+          />
+        </TextField>
+        {/* <View style={tw`flex flex-col gap-3 w-full max-w-80`}>
           <Text style={tw`font-segoe-bold`}>Gender</Text>
           <View
             style={tw`border border-primary-light rounded-lg px-3 py-2 flex flex-row items-center justify-start gap-2`}
@@ -142,29 +136,49 @@ export default function RegistrationScreen() {
               </DropdownMenu.Items>
             </DropdownMenu>
           </View>
-        </View>
-        <View style={tw`flex flex-col gap-3 w-full max-w-80`}>
-          <Text style={tw`font-segoe-bold`}>Password</Text>
-          <View
-            style={tw`border border-primary-light rounded-lg px-3 py-2 flex flex-row items-center justify-between gap-2`}
+        </View> */}
+        <TextField title="Email Address">
+          <FaUser style={tw`text-primary`} />
+          <TextInput
+            style={tw`font-segoe w-full focus:border-0 focus:ring-0`}
+            placeholder="Enter your email address"
+          />
+        </TextField>
+        <TextField title="Password">
+          <FaLock style={tw`text-primary`} />
+          <TextInput
+            style={tw`font-segoe w-full focus:border-0 focus:ring-0`}
+            placeholder="Enter your password"
+            secureTextEntry={!showPassword}
+          />
+          <TouchableOpacity onPress={() => setShowPassword(!showPassword)}>
+            {showPassword ? (
+              <FaEye style={tw`text-primary`} />
+            ) : (
+              <FaEye style={tw`text-primary`} />
+            )}
+          </TouchableOpacity>
+        </TextField>
+        <TextField title="Confirm Password">
+          <FaLock style={tw`text-primary`} />
+          <TextInput
+            style={tw`font-segoe w-full focus:border-0 focus:ring-0`}
+            placeholder="Confirm your password"
+            secureTextEntry={!showConfirmPassword}
+          />
+          <TouchableOpacity
+            onPress={() => setShowConfirmPassword(!showConfirmPassword)}
           >
-            <FaLock style={tw`text-primary`} />
-            <TextInput
-              style={tw`font-segoe w-full focus:border-0 focus:ring-0`}
-              placeholder="Enter your password"
-              secureTextEntry={!showPassword}
-            />
-            <TouchableOpacity onPress={() => setShowPassword(!showPassword)}>
-              {showPassword ? (
-                <FaEye style={tw`text-primary`} />
-              ) : (
-                <FaEye style={tw`text-primary`} />
-              )}
-            </TouchableOpacity>
-          </View>
-        </View>
+            {showConfirmPassword ? (
+              <FaEye style={tw`text-primary`} />
+            ) : (
+              <FaEye style={tw`text-primary`} />
+            )}
+          </TouchableOpacity>
+        </TextField>
         <TouchableOpacity
           style={tw`bg-primary py-3 px-6 rounded-lg w-full max-w-80 items-center justify-center`}
+          onPress={() => router.push("/login")}
         >
           <Text style={tw`text-white font-segoe-bold`}>Create Account</Text>
         </TouchableOpacity>

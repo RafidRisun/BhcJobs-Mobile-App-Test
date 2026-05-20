@@ -1,12 +1,13 @@
 import tw from "@/lib/tailwind";
 import { LinearGradient } from "expo-linear-gradient";
-import { Link } from "expo-router";
+import { Link, useRouter } from "expo-router";
 import { useState } from "react";
 import { FaEye, FaLock, FaPhone } from "react-icons/fa";
 import { Text, TextInput, TouchableOpacity, View } from "react-native";
 
 export default function LoginScreen() {
   const [showPassword, setShowPassword] = useState(false);
+  const router = useRouter();
   return (
     <View style={tw`flex flex-col items-center justify-center h-full`}>
       <LinearGradient
@@ -55,6 +56,7 @@ export default function LoginScreen() {
         </View>
         <TouchableOpacity
           style={tw`bg-primary py-3 px-6 rounded-lg w-full max-w-80 items-center justify-center`}
+          onPress={() => router.push("/home")}
         >
           <Text style={tw`text-white font-segoe-bold`}>Login</Text>
         </TouchableOpacity>
