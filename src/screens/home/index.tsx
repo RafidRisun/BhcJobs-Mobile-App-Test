@@ -3,26 +3,53 @@ import PopularIndustryCard from "@/components/Home/PopularIndustryCard";
 import RecommendedJobsCard from "@/components/Home/RecommendedJobsCard";
 import NavBar from "@/components/NavBar";
 import ScreenWrapper from "@/components/ScreenWrapper";
-import {
-  industries,
-  popularCompanies,
-  recommendedJobs,
-} from "@/constants/dummyData";
+import { useCompany } from "@/hooks/useCompany";
+import { useIndustry } from "@/hooks/useIndustry";
+import { useJob } from "@/hooks/useJob";
 import tw from "@/lib/tailwind";
 import { Ionicons as IoIcons } from "@expo/vector-icons";
 import { LinearGradient } from "expo-linear-gradient";
 import React, { useState } from "react";
-import { Text, TextInput, TouchableOpacity, View } from "react-native";
+import {
+  ActivityIndicator,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  View,
+} from "react-native";
 
 const HomeScreen = () => {
+  const {
+    data: industries,
+    isLoading: isIndustryLoading,
+    isError: isIndustryError,
+  } = useIndustry();
+  const { data: jobs, isLoading: isJobLoading, isError: isJobError } = useJob();
+  const {
+    data: companies,
+    isLoading: isCompanyLoading,
+    isError: isCompanyError,
+  } = useCompany();
+
   const [industrySlice, setIndustrySlice] = useState(4);
-  const visibleIndustries = industries.slice(0, industrySlice);
+  const industryList = industries?.data ?? [];
+  const visibleIndustries = industryList.slice(0, industrySlice);
 
   const [jobsSlice, setJobsSlice] = useState(4);
-  const visibleJobs = recommendedJobs.slice(0, jobsSlice);
+  const jobList = jobs?.data ?? [];
+  const visibleJobs = jobList.slice(0, jobsSlice);
 
   const [companySlice, setCompanySlice] = useState(4);
-  const visibleCompanies = popularCompanies.slice(0, companySlice);
+  const companyList = companies?.data ?? [];
+  const visibleCompanies = companyList.slice(0, companySlice);
+
+  if (isIndustryLoading || isJobLoading || isCompanyLoading) {
+    return (
+      <ScreenWrapper>
+        <ActivityIndicator size="large" color="#2563EB" style={tw`mt-20`} />
+      </ScreenWrapper>
+    );
+  }
 
   return (
     <ScreenWrapper>
@@ -66,10 +93,10 @@ const HomeScreen = () => {
         <View
           style={tw`flex flex-row flex-wrap items-center justify-center gap-4`}
         >
-          {visibleIndustries.map((industry) => (
+          {visibleIndustries.map((industry: any) => (
             <PopularIndustryCard key={industry.id} industry={industry} />
           ))}
-          {industrySlice < industries.length ? (
+          {industrySlice < industryList.length ? (
             <TouchableOpacity
               onPress={() => setIndustrySlice(industrySlice + 4)}
               style={tw`pt-4`}
@@ -80,7 +107,7 @@ const HomeScreen = () => {
                 View More
               </Text>
               <Text style={tw`text-sm text-gray-500 text-center`}>
-                {industries.length - industrySlice} more industries
+                {industryList.length - industrySlice} more industries
               </Text>
             </TouchableOpacity>
           ) : null}
@@ -97,10 +124,10 @@ const HomeScreen = () => {
           </Text>
         </View>
         <View style={tw`flex w-full items-center justify-center gap-4`}>
-          {visibleJobs.map((job) => (
+          {visibleJobs.map((job: any) => (
             <RecommendedJobsCard key={job.id} job={job} />
           ))}
-          {jobsSlice < recommendedJobs.length ? (
+          {jobsSlice < jobList.length ? (
             <TouchableOpacity
               onPress={() => setJobsSlice(jobsSlice + 4)}
               style={tw`pt-4`}
@@ -111,7 +138,7 @@ const HomeScreen = () => {
                 View More
               </Text>
               <Text style={tw`text-sm text-gray-500 text-center`}>
-                {recommendedJobs.length - jobsSlice} more jobs
+                {jobList.length - jobsSlice} more jobs
               </Text>
             </TouchableOpacity>
           ) : null}
@@ -130,10 +157,10 @@ const HomeScreen = () => {
         <View
           style={tw`flex flex-row flex-wrap items-center justify-center gap-4`}
         >
-          {visibleCompanies.map((company) => (
+          {visibleCompanies.map((company: any) => (
             <PopularCompaniesCard key={company.id} company={company} />
           ))}
-          {companySlice < popularCompanies.length ? (
+          {companySlice < companyList.length ? (
             <TouchableOpacity
               onPress={() => setCompanySlice(companySlice + 4)}
               style={tw`pt-4`}
@@ -144,7 +171,7 @@ const HomeScreen = () => {
                 View More
               </Text>
               <Text style={tw`text-sm text-gray-500 text-center`}>
-                {popularCompanies.length - companySlice} more companies
+                {companyList.length - companySlice} more companies
               </Text>
             </TouchableOpacity>
           ) : null}
