@@ -183,10 +183,7 @@ export default function RegistrationScreen() {
           </TouchableOpacity>
           <Text>Agree to the terms and conditions</Text>
         </View>
-        <FullButton
-          text="Create Account"
-          action={() => router.push("/login")}
-        />
+        <FullButton text="Create Account" action={() => router.push("/otp")} />
         {/* <View style={tw`flex flex-row items-center gap-2 w-full max-w-80`}>
           <HorizontalDivider />
           <Text style={tw`text-gray-500 font-segoe`}>or</Text>
