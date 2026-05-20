@@ -1,9 +1,9 @@
 import FullButton from "@/components/FullButton";
 import TextField from "@/components/TextField";
+import { useRegisterJobSeeker } from "@/hooks/useRegisterJobSeeker";
 import tw from "@/lib/tailwind";
 import { Ionicons } from "@expo/vector-icons";
 import DateTimePicker from "@react-native-community/datetimepicker";
-// Using a simple touch-to-open dropdown instead of native Picker
 import { LinearGradient } from "expo-linear-gradient";
 import { Link, useRouter } from "expo-router";
 import { useState } from "react";
@@ -24,8 +24,65 @@ export default function RegistrationScreen() {
   const [selectedGender, setSelectedGender] = useState("Select Gender");
   const genderOptions = ["Male", "Female", "Other"];
   const [agreeTerms, setAgreeTerms] = useState(false);
+  const [fullName, setFullName] = useState("");
+  const [mobileNumber, setMobileNumber] = useState("");
+  const [passportNumber, setPassportNumber] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
+
+  const [invalid, setInvalid] = useState(false);
+  const [validationMessage, setValidationMessage] = useState("");
 
   const router = useRouter();
+
+  const {
+    mutate: register,
+    isPending,
+    isError,
+    error,
+  } = useRegisterJobSeeker();
+
+  const handleSubmit = () => {
+    if (!agreeTerms) {
+      setInvalid(true);
+      setValidationMessage("You must agree to the terms and conditions.");
+      return;
+    }
+    if (password !== confirmPassword) {
+      setInvalid(true);
+      setValidationMessage("Passwords do not match.");
+      return;
+    }
+    if (
+      !fullName ||
+      !mobileNumber ||
+      !date ||
+      selectedGender === "Select Gender" ||
+      !passportNumber ||
+      !email ||
+      !password
+    ) {
+      setInvalid(true);
+      setValidationMessage("All fields are required.");
+      return;
+    }
+
+    const formData = new FormData();
+    formData.append("name", fullName);
+    formData.append("phone", mobileNumber);
+    formData.append("dob", date.toISOString().split("T")[0]);
+    formData.append("gender", selectedGender);
+    formData.append("passport_number", passportNumber);
+    formData.append("email", email);
+    formData.append("password", password);
+    formData.append("confirm_password", confirmPassword);
+    register(formData);
+    if (!isPending && !isError) {
+      console.log("Registration successful");
+      router.push("/otp");
+    }
+  };
 
   return (
     <ScrollView
@@ -51,6 +108,8 @@ export default function RegistrationScreen() {
             style={tw`font-segoe text-black w-full focus:border-0 focus:ring-0`}
             placeholder="Enter your full name"
             placeholderTextColor="#9CA3AF"
+            value={fullName}
+            onChangeText={setFullName}
           />
         </TextField>
         <TextField title="Mobile Number">
@@ -59,6 +118,8 @@ export default function RegistrationScreen() {
             style={tw`font-segoe text-black w-full focus:border-0 focus:ring-0`}
             placeholder="Enter your mobile number"
             placeholderTextColor="#9CA3AF"
+            value={mobileNumber}
+            onChangeText={setMobileNumber}
           />
         </TextField>
         <TextField title="Date of Birth">
@@ -91,6 +152,8 @@ export default function RegistrationScreen() {
             style={tw`font-segoe text-black w-full focus:border-0 focus:ring-0`}
             placeholder="Enter your passport number"
             placeholderTextColor="#9CA3AF"
+            value={passportNumber}
+            onChangeText={setPassportNumber}
           />
         </TextField>
         <View style={tw`flex flex-col gap-3 w-full max-w-80`}>
@@ -134,6 +197,8 @@ export default function RegistrationScreen() {
             style={tw`font-segoe text-black w-full focus:border-0 focus:ring-0`}
             placeholder="Enter your email address"
             placeholderTextColor="#9CA3AF"
+            value={email}
+            onChangeText={setEmail}
           />
         </TextField>
         <TextField title="Password">
@@ -143,6 +208,8 @@ export default function RegistrationScreen() {
             placeholder="Enter your password"
             secureTextEntry={!showPassword}
             placeholderTextColor="#9CA3AF"
+            value={password}
+            onChangeText={setPassword}
           />
           <TouchableOpacity
             onPress={() => setShowPassword(!showPassword)}
@@ -162,6 +229,8 @@ export default function RegistrationScreen() {
             placeholder="Confirm your password"
             secureTextEntry={!showConfirmPassword}
             placeholderTextColor="#9CA3AF"
+            value={confirmPassword}
+            onChangeText={setConfirmPassword}
           />
           <TouchableOpacity
             onPress={() => setShowConfirmPassword(!showConfirmPassword)}
@@ -183,7 +252,25 @@ export default function RegistrationScreen() {
           </TouchableOpacity>
           <Text>Agree to the terms and conditions</Text>
         </View>
-        <FullButton text="Create Account" action={() => router.push("/otp")} />
+        {invalid && (
+          <View
+            style={tw`bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded`}
+          >
+            <Text style={tw`font-segoe`}>{validationMessage}</Text>
+          </View>
+        )}
+        {isError && (
+          <View
+            style={tw`bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded`}
+          >
+            <Text style={tw`font-segoe`}>{error.message}</Text>
+          </View>
+        )}
+        <FullButton
+          text="Create Account"
+          action={handleSubmit}
+          isPending={isPending}
+        />
         {/* <View style={tw`flex flex-row items-center gap-2 w-full max-w-80`}>
           <HorizontalDivider />
           <Text style={tw`text-gray-500 font-segoe`}>or</Text>
