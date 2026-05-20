@@ -39,8 +39,9 @@ export default function LoginScreen() {
           >
             <Ionicons name="call" size={20} color="#2563EB" />
             <TextInput
-              style={tw`font-segoe flex-1 min-w-0 focus:border-0 focus:ring-0`}
+              style={tw`font-segoe text-black flex-1 min-w-0 focus:border-0 focus:ring-0`}
               placeholder="Enter your mobile number"
+              placeholderTextColor="#9CA3AF"
             />
           </View>
         </View>
@@ -51,8 +52,9 @@ export default function LoginScreen() {
           >
             <Ionicons name="lock-closed" size={20} color="#2563EB" />
             <TextInput
-              style={tw`font-segoe flex-1 min-w-0 focus:border-0 focus:ring-0`}
+              style={tw`font-segoe text-black flex-1 min-w-0 focus:border-0 focus:ring-0`}
               placeholder="Enter your password"
+              placeholderTextColor="#9CA3AF"
               secureTextEntry={!showPassword}
             />
             <TouchableOpacity

@@ -10,7 +10,7 @@ const TextField = ({
   title: string;
 }) => {
   return (
-    <View style={tw`flex flex-col gap-3 w-full max-w-80`}>
+    <View style={tw`flex flex-col gap-3 w-full max-w-80 justify-center`}>
       <Text style={tw`font-segoe-bold`}>{title}</Text>
       <View
         style={tw`border border-primary-light rounded-lg px-3 py-2 flex flex-row items-center justify-start gap-2`}

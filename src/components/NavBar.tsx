@@ -12,7 +12,7 @@ const NavBar = () => {
   return (
     <>
       <View
-        style={tw`flex flex-row items-center justify-between p-5 sticky top-0 bg-white z-10 border-b border-gray-300`}
+        style={tw`flex flex-row items-center justify-between p-5 top-0 bg-white z-10 border-b border-gray-300`}
       >
         <Image
           source={require("../assets/images/logo.png")}

@@ -1,8 +1,8 @@
 import TextField from "@/components/TextField";
 import tw from "@/lib/tailwind";
-// import { DropdownMenu, DropdownMenuItem } from "@expo/ui/jetpack-compose";
 import { Ionicons } from "@expo/vector-icons";
 import DateTimePicker from "@react-native-community/datetimepicker";
+// Using a simple touch-to-open dropdown instead of native Picker
 import { LinearGradient } from "expo-linear-gradient";
 import { Link, useRouter } from "expo-router";
 import { useState } from "react";
@@ -21,6 +21,8 @@ export default function RegistrationScreen() {
   const [date, setDate] = useState(new Date());
   const [isExpanded, setIsExpanded] = useState(false);
   const [selectedGender, setSelectedGender] = useState("Select Gender");
+  const genderOptions = ["Male", "Female", "Other"];
+  const [agreeTerms, setAgreeTerms] = useState(false);
 
   const router = useRouter();
 
@@ -45,20 +47,25 @@ export default function RegistrationScreen() {
         <TextField title="Full Name">
           <Ionicons name="person" size={20} color="#2563EB" />
           <TextInput
-            style={tw`font-segoe w-full focus:border-0 focus:ring-0`}
+            style={tw`font-segoe text-black w-full focus:border-0 focus:ring-0`}
             placeholder="Enter your full name"
+            placeholderTextColor="#9CA3AF"
           />
         </TextField>
         <TextField title="Mobile Number">
           <Ionicons name="call" size={20} color="#2563EB" />
           <TextInput
-            style={tw`font-segoe w-full focus:border-0 focus:ring-0`}
+            style={tw`font-segoe text-black w-full focus:border-0 focus:ring-0`}
             placeholder="Enter your mobile number"
+            placeholderTextColor="#9CA3AF"
           />
         </TextField>
         <TextField title="Date of Birth">
           <Ionicons name="calendar" size={20} color="#2563EB" />
-          <TouchableOpacity onPress={() => setShowPicker(true)}>
+          <TouchableOpacity
+            onPress={() => setShowPicker(true)}
+            style={tw`h-10`}
+          >
             <Text style={tw`font-segoe w-full focus:border-0 focus:ring-0`}>
               {date.toDateString()}
             </Text>
@@ -80,77 +87,61 @@ export default function RegistrationScreen() {
         <TextField title="Passport">
           <Ionicons name="document-text" size={20} color="#2563EB" />
           <TextInput
-            style={tw`font-segoe w-full focus:border-0 focus:ring-0`}
+            style={tw`font-segoe text-black w-full focus:border-0 focus:ring-0`}
             placeholder="Enter your passport number"
+            placeholderTextColor="#9CA3AF"
           />
         </TextField>
-        {/* <View style={tw`flex flex-col gap-3 w-full max-w-80`}>
+        <View style={tw`flex flex-col gap-3 w-full max-w-80`}>
           <Text style={tw`font-segoe-bold`}>Gender</Text>
-          <View
-            style={tw`border border-primary-light rounded-lg px-3 py-2 flex flex-row items-center justify-start gap-2`}
-          >
-            <FaUser style={tw`text-primary`} />
-            <DropdownMenu
-              expanded={isExpanded}
-              onDismissRequest={() => setIsExpanded(false)}
+          <View style={tw`relative w-full`}>
+            <TouchableOpacity
+              onPress={() => setIsExpanded((s) => !s)}
+              style={tw`border border-primary-light rounded-lg px-3 py-2 flex flex-row items-center justify-start gap-2 bg-white`}
             >
-              <DropdownMenu.Trigger>
-                <TouchableOpacity onPress={() => setIsExpanded(true)}>
-                  <Text
-                    style={tw`font-segoe w-full focus:border-0 focus:ring-0`}
+              <Ionicons name="person" size={20} color="#2563EB" />
+              <Text style={tw`font-segoe flex-1 h-10`}>{selectedGender}</Text>
+              <Ionicons
+                name={isExpanded ? "chevron-up" : "chevron-down"}
+                size={18}
+                color="#2563EB"
+              />
+            </TouchableOpacity>
+            {isExpanded ? (
+              <View
+                style={tw`absolute left-0 right-0 top-14 z-10 overflow-hidden rounded-lg border border-primary-light bg-white shadow-lg`}
+              >
+                {genderOptions.map((option) => (
+                  <TouchableOpacity
+                    key={option}
+                    onPress={() => {
+                      setIsExpanded(false);
+                      setSelectedGender(option);
+                    }}
+                    style={tw`px-4 py-3 border-b border-gray-100 last:border-b-0`}
                   >
-                    {selectedGender}
-                  </Text>
-                </TouchableOpacity>
-              </DropdownMenu.Trigger>
-              <DropdownMenu.Items>
-                <DropdownMenuItem
-                  onClick={() => {
-                    setIsExpanded(false);
-                    setSelectedGender("Male");
-                  }}
-                >
-                  <DropdownMenuItem.Text>
-                    <Text>Male</Text>
-                  </DropdownMenuItem.Text>
-                </DropdownMenuItem>
-                <DropdownMenuItem
-                  onClick={() => {
-                    setIsExpanded(false);
-                    setSelectedGender("Female");
-                  }}
-                >
-                  <DropdownMenuItem.Text>
-                    <Text>Female</Text>
-                  </DropdownMenuItem.Text>
-                </DropdownMenuItem>
-                <DropdownMenuItem
-                  onClick={() => {
-                    setIsExpanded(false);
-                    setSelectedGender("Other");
-                  }}
-                >
-                  <DropdownMenuItem.Text>
-                    <Text>Other</Text>
-                  </DropdownMenuItem.Text>
-                </DropdownMenuItem>
-              </DropdownMenu.Items>
-            </DropdownMenu>
+                    <Text style={tw`font-segoe`}>{option}</Text>
+                  </TouchableOpacity>
+                ))}
+              </View>
+            ) : null}
           </View>
-        </View> */}
+        </View>
         <TextField title="Email Address">
           <Ionicons name="person" size={20} color="#2563EB" />
           <TextInput
-            style={tw`font-segoe w-full focus:border-0 focus:ring-0`}
+            style={tw`font-segoe text-black w-full focus:border-0 focus:ring-0`}
             placeholder="Enter your email address"
+            placeholderTextColor="#9CA3AF"
           />
         </TextField>
         <TextField title="Password">
           <Ionicons name="lock-closed" size={20} color="#2563EB" />
           <TextInput
-            style={tw`font-segoe flex-1 min-w-0 focus:border-0 focus:ring-0`}
+            style={tw`font-segoe text-black flex-1 min-w-0 focus:border-0 focus:ring-0`}
             placeholder="Enter your password"
             secureTextEntry={!showPassword}
+            placeholderTextColor="#9CA3AF"
           />
           <TouchableOpacity
             onPress={() => setShowPassword(!showPassword)}
@@ -166,9 +157,10 @@ export default function RegistrationScreen() {
         <TextField title="Confirm Password">
           <Ionicons name="lock-closed" size={20} color="#2563EB" />
           <TextInput
-            style={tw`font-segoe flex-1 min-w-0 focus:border-0 focus:ring-0`}
+            style={tw`font-segoe text-black flex-1 min-w-0 focus:border-0 focus:ring-0`}
             placeholder="Confirm your password"
             secureTextEntry={!showConfirmPassword}
+            placeholderTextColor="#9CA3AF"
           />
           <TouchableOpacity
             onPress={() => setShowConfirmPassword(!showConfirmPassword)}
@@ -181,6 +173,15 @@ export default function RegistrationScreen() {
             )}
           </TouchableOpacity>
         </TextField>
+        <View style={tw`flex flex-row w-full items-center justify-start gap-2`}>
+          <TouchableOpacity
+            onPress={() => setAgreeTerms(!agreeTerms)}
+            style={tw`w-5 h-5 border border-gray-300 rounded-sm items-center justify-center`}
+          >
+            {agreeTerms && <View style={tw`w-3 h-3 bg-primary rounded-sm`} />}
+          </TouchableOpacity>
+          <Text>Agree to the terms and conditions</Text>
+        </View>
         <TouchableOpacity
           style={tw`bg-primary py-3 px-6 rounded-lg w-full max-w-80 items-center justify-center`}
           onPress={() => router.push("/login")}
