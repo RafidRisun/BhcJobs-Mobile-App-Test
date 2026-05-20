@@ -1,57 +1,125 @@
-# Welcome to your Expo app 👋
+# BhcJobs Mobile App
 
-This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
+Expo-based mobile app for BhcJobs.
 
-## Get started
+## Prerequisites
 
-1. Install dependencies
+- Node.js 18 or newer
+- npm
+- Android Studio and an emulator, or a physical Android device
+- EAS CLI if you want to build an APK
 
-   ```bash
-   npm install
-   ```
+## Setup
 
-2. Start the app
-
-   ```bash
-   npx expo start
-   ```
-
-In the output, you'll find options to open the app in a
-
-- [development build](https://docs.expo.dev/develop/development-builds/introduction/)
-- [Android emulator](https://docs.expo.dev/workflow/android-studio-emulator/)
-- [iOS simulator](https://docs.expo.dev/workflow/ios-simulator/)
-- [Expo Go](https://expo.dev/go), a limited sandbox for trying out app development with Expo
-
-You can start developing by editing the files inside the **app** directory. This project uses [file-based routing](https://docs.expo.dev/router/introduction).
-
-## Get a fresh project
-
-When you're ready, run:
+Install dependencies:
 
 ```bash
-npm run reset-project
+npm install
 ```
 
-This command will move the starter code to the **app-example** directory and create a blank **app** directory where you can start developing.
+If you add or update native packages, install them with Expo so the versions stay aligned:
 
-### Other setup steps
+```bash
+npx expo install <package-name>
+```
 
-- To set up ESLint for linting, run `npx expo lint`, or follow our guide on ["Using ESLint and Prettier"](https://docs.expo.dev/guides/using-eslint/)
-- If you'd like to set up unit testing, follow our guide on ["Unit Testing with Jest"](https://docs.expo.dev/develop/unit-testing/)
-- Learn more about the TypeScript setup in this template in our guide on ["Using TypeScript"](https://docs.expo.dev/guides/typescript/)
+## How to run
 
-## Learn more
+Start the Expo development server:
 
-To learn more about developing your project with Expo, look at the following resources:
+```bash
+npx expo start
+```
 
-- [Expo documentation](https://docs.expo.dev/): Learn fundamentals, or go into advanced topics with our [guides](https://docs.expo.dev/guides).
-- [Learn Expo tutorial](https://docs.expo.dev/tutorial/introduction/): Follow a step-by-step tutorial where you'll create a project that runs on Android, iOS, and the web.
+From the Expo menu, you can open the app in:
 
-## Join the community
+- Expo Go for JavaScript-only work
+- an Android emulator
+- a physical Android device
+- a web browser
 
-Join our community of developers creating universal apps.
+## How to run a development build
 
-- [Expo on GitHub](https://github.com/expo/expo): View our open source platform and contribute.
-- [Discord community](https://chat.expo.dev): Chat with Expo users and ask questions.
-"# BhcJobs-Mobile-App-Test" 
+This project uses native modules, so for anything that depends on them, use a development build instead of Expo Go.
+
+1. Install the dev client dependency if it is not already installed:
+
+```bash
+npx expo install expo-dev-client
+```
+
+2. Create and install the native development build on Android:
+
+```bash
+npx expo run:android
+```
+
+3. Start Metro for the dev client:
+
+```bash
+npx expo start --dev-client
+```
+
+Use the installed development build app on your device or emulator to open the project.
+
+## How to build APK
+
+To build an APK, use EAS Build.
+
+1. Install EAS CLI:
+
+```bash
+npm install -g eas-cli
+```
+
+2. Log in and configure EAS if needed:
+
+```bash
+eas login
+eas build:configure
+```
+
+3. Make sure your EAS config uses an APK profile for Android. In `eas.json`, your profile should look similar to this:
+
+```json
+{
+  "build": {
+    "preview": {
+      "android": {
+        "buildType": "apk"
+      }
+    }
+  }
+}
+```
+
+4. Build the APK:
+
+```bash
+eas build -p android --profile preview
+```
+
+If you already have a configured `eas.json`, use the profile that is set to generate an APK.
+
+## Useful scripts
+
+```bash
+npm run start
+npm run android
+npm run ios
+npm run web
+npm run lint
+```
+
+## Project structure
+
+- `src/app` contains the Expo Router routes
+- `src/screens` contains the screen implementations
+- `src/components` contains shared UI components
+- `src/hooks` contains data and mutation hooks
+- `src/api` contains API helpers
+
+## Notes
+
+- The app uses Expo Router for file-based routing.
+- Native features require a development build, not Expo Go.
