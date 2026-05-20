@@ -1,13 +1,8 @@
-import ScreenWrapper from '@/components/ScreenWrapper'
-import LoginScreen from '@/screens/auth/login'
-import React from 'react'
+import LoginScreen from "@/screens/auth/login";
+import React from "react";
 
 const Login = () => {
-  return (
-    <ScreenWrapper>
-      <LoginScreen />
-    </ScreenWrapper>
-  )
-}
+  return <LoginScreen />;
+};
 
-export default Login
+export default Login;

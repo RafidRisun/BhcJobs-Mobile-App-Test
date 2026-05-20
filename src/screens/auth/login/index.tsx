@@ -1,15 +1,25 @@
 import tw from "@/lib/tailwind";
+import { Ionicons } from "@expo/vector-icons";
 import { LinearGradient } from "expo-linear-gradient";
 import { Link, useRouter } from "expo-router";
 import { useState } from "react";
-import { FaEye, FaLock, FaPhone } from "react-icons/fa";
-import { Text, TextInput, TouchableOpacity, View } from "react-native";
+import {
+  ScrollView,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  View,
+} from "react-native";
 
 export default function LoginScreen() {
   const [showPassword, setShowPassword] = useState(false);
   const router = useRouter();
   return (
-    <View style={tw`flex flex-col items-center justify-center h-full`}>
+    <ScrollView
+      style={tw`flex-1`}
+      contentContainerStyle={tw`flex-grow items-center justify-center py-8`}
+      keyboardShouldPersistTaps="handled"
+    >
       <LinearGradient
         colors={["#2563EB", "#DBEAFE", "#FFFFFF"]}
         style={tw`absolute inset-0`}
@@ -17,7 +27,7 @@ export default function LoginScreen() {
         end={{ x: 0, y: 1 }}
       />
       <View
-        style={tw`flex flex-col gap-6 items-center justify-center mx-6 p-6 rounded-2xl w-full max-w-96 bg-white border border-gray-300`}
+        style={tw`flex flex-col gap-6 items-center justify-center p-6 rounded-2xl w-full max-w-96 bg-white border border-gray-300`}
       >
         <Text style={tw`font-segoe-bold text-2xl text-primary`}>
           Job Seeker Login
@@ -27,9 +37,9 @@ export default function LoginScreen() {
           <View
             style={tw`border border-primary-light rounded-lg px-3 py-2 flex flex-row items-center justify-start gap-2`}
           >
-            <FaPhone style={tw`text-primary`} />
+            <Ionicons name="call" size={20} color="#2563EB" />
             <TextInput
-              style={tw`font-segoe w-full focus:border-0 focus:ring-0`}
+              style={tw`font-segoe flex-1 min-w-0 focus:border-0 focus:ring-0`}
               placeholder="Enter your mobile number"
             />
           </View>
@@ -39,17 +49,20 @@ export default function LoginScreen() {
           <View
             style={tw`border border-primary-light rounded-lg px-3 py-2 flex flex-row items-center justify-between gap-2`}
           >
-            <FaLock style={tw`text-primary`} />
+            <Ionicons name="lock-closed" size={20} color="#2563EB" />
             <TextInput
-              style={tw`font-segoe w-full focus:border-0 focus:ring-0`}
+              style={tw`font-segoe flex-1 min-w-0 focus:border-0 focus:ring-0`}
               placeholder="Enter your password"
               secureTextEntry={!showPassword}
             />
-            <TouchableOpacity onPress={() => setShowPassword(!showPassword)}>
+            <TouchableOpacity
+              onPress={() => setShowPassword(!showPassword)}
+              style={tw`shrink-0`}
+            >
               {showPassword ? (
-                <FaEye style={tw`text-primary`} />
+                <Ionicons name="eye" size={20} color="#2563EB" />
               ) : (
-                <FaEye style={tw`text-primary`} />
+                <Ionicons name="eye-off" size={20} color="#2563EB" />
               )}
             </TouchableOpacity>
           </View>
@@ -72,6 +85,6 @@ export default function LoginScreen() {
           </Link>
         </View>
       </View>
-    </View>
+    </ScrollView>
   );
 }

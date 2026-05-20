@@ -1,8 +1,8 @@
 import tw from "@/lib/tailwind";
+import { Ionicons } from "@expo/vector-icons";
 import { Image } from "expo-image";
 import { useRouter } from "expo-router";
 import React, { useState } from "react";
-import { RxHamburgerMenu } from "react-icons/rx";
 import { Text, TouchableOpacity, View } from "react-native";
 
 const NavBar = () => {
@@ -20,12 +20,12 @@ const NavBar = () => {
           contentFit="contain"
         />
         <TouchableOpacity onPress={() => setShowMenu(!showMenu)}>
-          <RxHamburgerMenu />
+          <Ionicons name="menu" size={24} color="#2563EB" />
         </TouchableOpacity>
       </View>
       {showMenu && (
         <View
-          style={tw`absolute top-16 right-5 bg-white border border-gray-300 rounded-lg p-3`}
+          style={tw`absolute z-50 top-16 right-5 bg-white border border-gray-300 rounded-lg p-3`}
         >
           <TouchableOpacity
             style={tw`py-2`}

@@ -1,19 +1,18 @@
 import TextField from "@/components/TextField";
 import tw from "@/lib/tailwind";
 // import { DropdownMenu, DropdownMenuItem } from "@expo/ui/jetpack-compose";
+import { Ionicons } from "@expo/vector-icons";
 import DateTimePicker from "@react-native-community/datetimepicker";
 import { LinearGradient } from "expo-linear-gradient";
 import { Link, useRouter } from "expo-router";
 import { useState } from "react";
 import {
-    FaCalendarAlt,
-    FaEye,
-    FaLock,
-    FaPassport,
-    FaPhone,
-    FaUser,
-} from "react-icons/fa";
-import { Text, TextInput, TouchableOpacity, View } from "react-native";
+  ScrollView,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  View,
+} from "react-native";
 
 export default function RegistrationScreen() {
   const [showPassword, setShowPassword] = useState(false);
@@ -26,8 +25,10 @@ export default function RegistrationScreen() {
   const router = useRouter();
 
   return (
-    <View
-      style={tw`flex flex-col overflow-scroll items-center justify-center h-full`}
+    <ScrollView
+      style={tw`flex-1`}
+      contentContainerStyle={tw`flex-grow items-center justify-center py-26`}
+      keyboardShouldPersistTaps="handled"
     >
       <LinearGradient
         colors={["#2563EB", "#DBEAFE", "#FFFFFF"]}
@@ -42,21 +43,21 @@ export default function RegistrationScreen() {
           Create an Account
         </Text>
         <TextField title="Full Name">
-          <FaUser style={tw`text-primary`} />
+          <Ionicons name="person" size={20} color="#2563EB" />
           <TextInput
             style={tw`font-segoe w-full focus:border-0 focus:ring-0`}
             placeholder="Enter your full name"
           />
         </TextField>
         <TextField title="Mobile Number">
-          <FaPhone style={tw`text-primary`} />
+          <Ionicons name="call" size={20} color="#2563EB" />
           <TextInput
             style={tw`font-segoe w-full focus:border-0 focus:ring-0`}
             placeholder="Enter your mobile number"
           />
         </TextField>
         <TextField title="Date of Birth">
-          <FaCalendarAlt style={tw`text-primary`} />
+          <Ionicons name="calendar" size={20} color="#2563EB" />
           <TouchableOpacity onPress={() => setShowPicker(true)}>
             <Text style={tw`font-segoe w-full focus:border-0 focus:ring-0`}>
               {date.toDateString()}
@@ -77,7 +78,7 @@ export default function RegistrationScreen() {
           />
         )}
         <TextField title="Passport">
-          <FaPassport style={tw`text-primary`} />
+          <Ionicons name="document-text" size={20} color="#2563EB" />
           <TextInput
             style={tw`font-segoe w-full focus:border-0 focus:ring-0`}
             placeholder="Enter your passport number"
@@ -138,41 +139,45 @@ export default function RegistrationScreen() {
           </View>
         </View> */}
         <TextField title="Email Address">
-          <FaUser style={tw`text-primary`} />
+          <Ionicons name="person" size={20} color="#2563EB" />
           <TextInput
             style={tw`font-segoe w-full focus:border-0 focus:ring-0`}
             placeholder="Enter your email address"
           />
         </TextField>
         <TextField title="Password">
-          <FaLock style={tw`text-primary`} />
+          <Ionicons name="lock-closed" size={20} color="#2563EB" />
           <TextInput
-            style={tw`font-segoe w-full focus:border-0 focus:ring-0`}
+            style={tw`font-segoe flex-1 min-w-0 focus:border-0 focus:ring-0`}
             placeholder="Enter your password"
             secureTextEntry={!showPassword}
           />
-          <TouchableOpacity onPress={() => setShowPassword(!showPassword)}>
+          <TouchableOpacity
+            onPress={() => setShowPassword(!showPassword)}
+            style={tw`shrink-0`}
+          >
             {showPassword ? (
-              <FaEye style={tw`text-primary`} />
+              <Ionicons name="eye" size={20} color="#2563EB" />
             ) : (
-              <FaEye style={tw`text-primary`} />
+              <Ionicons name="eye-off" size={20} color="#2563EB" />
             )}
           </TouchableOpacity>
         </TextField>
         <TextField title="Confirm Password">
-          <FaLock style={tw`text-primary`} />
+          <Ionicons name="lock-closed" size={20} color="#2563EB" />
           <TextInput
-            style={tw`font-segoe w-full focus:border-0 focus:ring-0`}
+            style={tw`font-segoe flex-1 min-w-0 focus:border-0 focus:ring-0`}
             placeholder="Confirm your password"
             secureTextEntry={!showConfirmPassword}
           />
           <TouchableOpacity
             onPress={() => setShowConfirmPassword(!showConfirmPassword)}
+            style={tw`shrink-0`}
           >
             {showConfirmPassword ? (
-              <FaEye style={tw`text-primary`} />
+              <Ionicons name="eye" size={20} color="#2563EB" />
             ) : (
-              <FaEye style={tw`text-primary`} />
+              <Ionicons name="eye-off" size={20} color="#2563EB" />
             )}
           </TouchableOpacity>
         </TextField>
@@ -194,6 +199,6 @@ export default function RegistrationScreen() {
           </Link>
         </View>
       </View>
-    </View>
+    </ScrollView>
   );
 }
