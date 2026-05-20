@@ -1,3 +1,4 @@
+import FullButton from "@/components/FullButton";
 import TextField from "@/components/TextField";
 import tw from "@/lib/tailwind";
 import { Ionicons } from "@expo/vector-icons";
@@ -182,12 +183,10 @@ export default function RegistrationScreen() {
           </TouchableOpacity>
           <Text>Agree to the terms and conditions</Text>
         </View>
-        <TouchableOpacity
-          style={tw`bg-primary py-3 px-6 rounded-lg w-full max-w-80 items-center justify-center`}
-          onPress={() => router.push("/login")}
-        >
-          <Text style={tw`text-white font-segoe-bold`}>Create Account</Text>
-        </TouchableOpacity>
+        <FullButton
+          text="Create Account"
+          action={() => router.push("/login")}
+        />
         {/* <View style={tw`flex flex-row items-center gap-2 w-full max-w-80`}>
           <HorizontalDivider />
           <Text style={tw`text-gray-500 font-segoe`}>or</Text>

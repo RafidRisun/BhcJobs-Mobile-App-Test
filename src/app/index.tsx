@@ -1,6 +1,6 @@
 import { useRouter } from "expo-router";
 import { useEffect } from "react";
-import { ActivityIndicator, StyleSheet, View } from 'react-native';
+import { ActivityIndicator, StyleSheet, View } from "react-native";
 
 export default function Index() {
   const router = useRouter();
@@ -8,7 +8,7 @@ export default function Index() {
   useEffect(() => {
     setTimeout(() => {
       console.log("Index");
-      router.replace("/login");
+      router.replace("/home");
     }, 1000);
   }, []);
 
